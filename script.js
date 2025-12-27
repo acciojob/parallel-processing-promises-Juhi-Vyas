@@ -10,20 +10,17 @@ const images = [
 
 btn.addEventListener("click", downloadImages)
 
-let p1 = fetch(image[0].url)
-let p2 = fetch(image[1].url)
-let p3 = fetch(image[2].url)
-
 function downloadImages() {
-	//blob -> converts a response into binary data
+
+	let promise = images.map(item => 
+		fetch(item.url).then(res => res.blob()))
 	
-		Promise.all([p1,p2,p3])
-		.then(res => res.blob())
-		.then(blob => {
-			let img = document.crateElement(img)
+	Promise.all(promise)
+		.then(blobs => blobs.forEach(blob => {
+			let img = document.createElement("img")
 			img.src = URL.createObjectURL(blob)
 			output.appendChild(img)
-		})
+		}))
 		.catch(err => {
 			error.innerText = "Error: " + err})
 }
