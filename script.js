@@ -13,12 +13,12 @@ btn.addEventListener("click", downloadImages)
 function downloadImages() {
 
 	let promise = images.map(item => 
-		fetch(item.url).then(res => res.blob()))
+		item.url)
 	
 	Promise.all(promise)
-		.then(blobs => blobs.forEach(blob => {
+		.then(res => res.forEach(image => {
 			let img = document.createElement("img")
-			img.src = URL.createObjectURL(blob)
+			img.src = image
 			output.appendChild(img)
 		}))
 		.catch(err => {
